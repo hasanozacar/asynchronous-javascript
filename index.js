@@ -1,9 +1,14 @@
-console.log("Before");
-getUser(1,(user)=>{
-console.log(user);
-getRepo(user.gitUserName,(repos)=>console.log(repos))
-})
-console.log("After");
+//Callbacks Hell
+console.log('Before');
+getUser(1, (user) => {
+  getRepo(user.gitHubUsername, (repos) => {
+    getCommits(repos[0], (commits) => {
+      console.log(commits);
+    })
+  })
+});
+console.log('After');
+
 
 //Callbacks
 //Promises
@@ -14,13 +19,18 @@ function getUser(id,callback) {
         console.log("Reading a user from a database ...");
         callback({id,gitUserName:"ozacar"})
         }, 2000);
-    return 1
 }
 
 function getRepo(id,callback) {
     setTimeout(() => {
-        console.log("Reading a user from a database ...");
-        callback(["repo1","repo2","repo3"])
-        }, 2000);
-    return 1
+        console.log('Calling GitHub API...');
+        callback(['repo1', 'repo2', 'repo3']);
+      }, 2000);
 }
+
+function getCommits(repo, callback) {
+    setTimeout(() => {
+      console.log('Calling GitHub API...');
+      callback(['commit']);
+    }, 2000);
+  }
